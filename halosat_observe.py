@@ -53,18 +53,23 @@ def getObsWindow(date,obs_window):
 
 	# Read map of the galaxy for plotting the window
 	# ----------------------------------------------
-	map = hp.read_map('fermi.fits')
+	map = hp.read_map('ROSAT_Total_hp_filt.fits')
 	cone_radius=obs_window/57.2958 # convert to radians
 	
 	# Convert to Galactic coordinates
 	# -------------------------------
-	np = ephem.Equatorial(win_ra, win_dec, epoch='2000')
-	g = ephem.Galactic(np)
+	ap = ephem.Equatorial(win_ra, win_dec, epoch='2000')
+	sp = ephem.Equatorial(sun.ra, sun.dec, epoch='2000')
+	g = ephem.Galactic(ap)
+	s = ephem.Galactic(sp)
 	print(g.lon,g.lat)
 	vec=hp.ang2vec(g.lon*57.4,g.lat*57.2958,lonlat=True)
-        local=hp.query_disc(128,vec,cone_radius)
+        local=hp.query_disc(512,vec,cone_radius)
 	map[local]=nan
-	hp.mollview(map,max=100,title='Date: '+str(halosat.date)+', Window Center: [RA '+str(win_ra)+', DEC ' + str(win_dec)+']',cbar=None)
+	hp.mollview(map,max=6000,title='Date: '+str(halosat.date)+', Window Center: [RA '+str(win_ra)+', DEC ' + str(win_dec)+']')
+	hp.projtext(g.lon*57.2958+20, g.lat*57.2958, 'Obs Window', lonlat=True, coord='G',fontsize=20)
+	hp.projscatter(s.lon*57.2958, s.lat*57.2958, lonlat=True, s=55,coord='G',color='yellow')
+	hp.projtext(s.lon*57.2958-5, s.lat*57.2958, 'Sun', lonlat=True, coord='G',fontsize=20)
 
 def getRandomPointings(nside,N):
 	npix=hp.nside2npix(nside)
