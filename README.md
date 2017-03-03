@@ -5,4 +5,4 @@ Survey strategy software for the HaloSat X-ray satellite. Below is the output of
 
 The radius of the allowed observing window in this case was set to 20 degrees. 
 
-![alt tag](https://github.com/sheabrown/HaloSat/blob/master/rosat_map.png)
+![alt tag](https://github.com/sheabrown/HaloSat/blob/master/rosat_map2.png)
